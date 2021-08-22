@@ -16,7 +16,9 @@ namespace Mini_Spotify
     public partial class FrmMain : Form
     {
         public static string SongURL = null;
+        public static bool IsPlaying = false;
         SongTracks Songs = new SongTracks();
+        public static int Offset = 0;
         public FrmMain()
         {
             InitializeComponent();
@@ -26,7 +28,7 @@ namespace Mini_Spotify
         {
             if (!string.IsNullOrEmpty(this.txtQuery.Text))
             {
-                SearchSong(this.txtQuery.Text);
+                SearchSong(this.txtQuery.Text,false);
             }
             else
             {
@@ -34,17 +36,19 @@ namespace Mini_Spotify
             }
         }
 
-        private void SearchSong(string text)
+        private void SearchSong(string text,bool IsNextPage)
         {
-            string url = "https://api.spotify.com/v1/search?query=" + text + "&type=track&&limit=20&offset=0";
+            if (IsNextPage)
+            {
+                Offset += 1;
+            }
+            string url = "https://api.spotify.com/v1/search?query=" + text + "&type=track&&limit=20&offset="+Offset;
 
             HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
-
             webRequest.Method = "GET";
             webRequest.ContentType = "application/json";
             webRequest.Accept = "application/json";
             webRequest.Headers.Add("Authorization: Bearer  " + Settings.Default.AuthToken);
-        
 
             HttpWebResponse resp = (HttpWebResponse)webRequest.GetResponse();
             String json = "";
@@ -67,11 +71,20 @@ namespace Mini_Spotify
                     }
                     this.lvPlayList.Visible = true;
                     this.btnPlay.Visible = true;
+                    this.btnStop.Text = "Next";
                     this.btnStop.Visible = true;
+                    ImageList images = new ImageList();
+                    if (images.Images.Count > 0)
+                    {
+                        images.Images.Clear();
+                    }
+                    int i = 0;
                     foreach (var item in Songs.tracks.items)
                     {
-                        this.lvPlayList.Items.Add(item.name);
+                        images.Images.Add(LoadImage(item.album.images[2].url.ToString()));
+                        this.lvPlayList.Items.Add(item.name,i);
                     }
+                    this.lvPlayList.LargeImageList = images;
                 }
                 else
                 {
@@ -80,21 +93,64 @@ namespace Mini_Spotify
             }
         }
 
+        private Image LoadImage(string url)
+        {
+            System.Net.WebRequest request =
+                System.Net.WebRequest.Create(url);
+
+            System.Net.WebResponse response = request.GetResponse();
+            System.IO.Stream responseStream =
+                response.GetResponseStream();
+
+            Bitmap bmp = new Bitmap(responseStream);
+
+            responseStream.Dispose();
+
+            return bmp;
+        }
+
         private void btnPlay_Click(object sender, EventArgs e)
         {
             string URL = null;
             if (this.lvPlayList.SelectedItems.Count > 0)
             {
-                var Item = this.lvPlayList.SelectedItems[0];
-                foreach (var item in Songs.tracks.items)
+                if (IsPlaying)
                 {
-                    if (item.name == Item.Text.ToString())
-                    {
-                        URL = item.external_urls.spotify;
-                        System.Diagnostics.Process.Start(URL);
-                        break;
-                    }
+                    IsPlaying = false;
+                    this.btnPlay.Text = "Play";
                 }
+                else
+                {
+                    IsPlaying = true;
+                    this.btnStop.Text = "Stop";
+                    this.btnPlay.Text = "Pause";
+                    var Item = this.lvPlayList.SelectedItems[0];
+                    foreach (var item in Songs.tracks.items)
+                    {
+                        if (item.name == Item.Text.ToString())
+                        {
+                            URL = item.external_urls.spotify;
+                            System.Diagnostics.Process.Start(URL);
+                            break;
+                        }
+                    }
+                } 
+            }
+            else
+            {
+                MessageBox.Show("Please make a selection...");
+            }
+        }
+
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            if (!IsPlaying)  //Next Page requested
+            {
+                SearchSong(this.txtQuery.Text, true);
+            }
+            else
+            {
+                this.btnPlay.Text = "Play";
             }
         }
     }

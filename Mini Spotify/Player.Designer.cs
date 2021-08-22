@@ -46,12 +46,13 @@ namespace Mini_Spotify
             // 
             // btnSearch
             // 
+            this.btnSearch.BackColor = System.Drawing.Color.Transparent;
             this.btnSearch.Location = new System.Drawing.Point(209, 112);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(75, 23);
             this.btnSearch.TabIndex = 1;
             this.btnSearch.Text = "Search";
-            this.btnSearch.UseVisualStyleBackColor = true;
+            this.btnSearch.UseVisualStyleBackColor = false;
             this.btnSearch.Click += new System.EventHandler(this.BtnSearch_Click);
             // 
             // lvPlayList
@@ -62,7 +63,6 @@ namespace Mini_Spotify
             this.lvPlayList.Size = new System.Drawing.Size(260, 231);
             this.lvPlayList.TabIndex = 2;
             this.lvPlayList.UseCompatibleStateImageBehavior = false;
-            this.lvPlayList.View = System.Windows.Forms.View.List;
             this.lvPlayList.Visible = false;
             // 
             // btnPlay
@@ -85,6 +85,7 @@ namespace Mini_Spotify
             this.btnStop.Text = "Stop";
             this.btnStop.UseVisualStyleBackColor = true;
             this.btnStop.Visible = false;
+            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
             // label1
             // 
@@ -99,7 +100,7 @@ namespace Mini_Spotify
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.BackColor = System.Drawing.Color.LightGray;
             this.ClientSize = new System.Drawing.Size(296, 476);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnStop);
@@ -107,8 +108,10 @@ namespace Mini_Spotify
             this.Controls.Add(this.lvPlayList);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.txtQuery);
+            this.ForeColor = System.Drawing.Color.Navy;
             this.MaximizeBox = false;
             this.Name = "FrmMain";
+            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Mini Spotify";
             this.ResumeLayout(false);

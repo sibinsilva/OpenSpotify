@@ -99,14 +99,16 @@ namespace Mini_Spotify
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(418, 342);
+            this.ClientSize = new System.Drawing.Size(379, 342);
+            this.ControlBox = false;
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblLoading);
             this.Controls.Add(this.circularProgressBar);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Splash";
-            this.Text = "Spotify";
+            this.ShowIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Load += new System.EventHandler(this.Splash_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
