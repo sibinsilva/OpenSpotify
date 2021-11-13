@@ -35,21 +35,23 @@ namespace Mini_Spotify
             this.btnPlay = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.btnPrev = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtQuery
             // 
             this.txtQuery.Location = new System.Drawing.Point(24, 77);
             this.txtQuery.Name = "txtQuery";
-            this.txtQuery.Size = new System.Drawing.Size(260, 20);
+            this.txtQuery.Size = new System.Drawing.Size(453, 20);
             this.txtQuery.TabIndex = 0;
+            this.txtQuery.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtQuery_KeyDown);
             // 
             // btnSearch
             // 
             this.btnSearch.BackColor = System.Drawing.Color.Transparent;
-            this.btnSearch.Location = new System.Drawing.Point(209, 112);
+            this.btnSearch.Location = new System.Drawing.Point(209, 103);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(75, 23);
+            this.btnSearch.Size = new System.Drawing.Size(75, 32);
             this.btnSearch.TabIndex = 1;
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = false;
@@ -60,7 +62,7 @@ namespace Mini_Spotify
             this.lvPlayList.HideSelection = false;
             this.lvPlayList.Location = new System.Drawing.Point(24, 161);
             this.lvPlayList.Name = "lvPlayList";
-            this.lvPlayList.Size = new System.Drawing.Size(260, 231);
+            this.lvPlayList.Size = new System.Drawing.Size(453, 231);
             this.lvPlayList.TabIndex = 2;
             this.lvPlayList.UseCompatibleStateImageBehavior = false;
             this.lvPlayList.Visible = false;
@@ -78,7 +80,7 @@ namespace Mini_Spotify
             // 
             // btnStop
             // 
-            this.btnStop.Location = new System.Drawing.Point(209, 406);
+            this.btnStop.Location = new System.Drawing.Point(402, 406);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(75, 23);
             this.btnStop.TabIndex = 4;
@@ -96,12 +98,24 @@ namespace Mini_Spotify
             this.label1.TabIndex = 5;
             this.label1.Text = "Search for your favorite Artist/Song";
             // 
+            // btnPrev
+            // 
+            this.btnPrev.Location = new System.Drawing.Point(321, 406);
+            this.btnPrev.Name = "btnPrev";
+            this.btnPrev.Size = new System.Drawing.Size(75, 23);
+            this.btnPrev.TabIndex = 6;
+            this.btnPrev.Text = "Previous";
+            this.btnPrev.UseVisualStyleBackColor = true;
+            this.btnPrev.Visible = false;
+            this.btnPrev.Click += new System.EventHandler(this.btnPrev_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightGray;
-            this.ClientSize = new System.Drawing.Size(296, 476);
+            this.ClientSize = new System.Drawing.Size(489, 476);
+            this.Controls.Add(this.btnPrev);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.btnPlay);
@@ -127,6 +141,7 @@ namespace Mini_Spotify
         private System.Windows.Forms.Button btnPlay;
         private System.Windows.Forms.Button btnStop;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnPrev;
     }
 }
 

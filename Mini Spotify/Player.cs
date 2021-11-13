@@ -28,7 +28,7 @@ namespace Mini_Spotify
         {
             if (!string.IsNullOrEmpty(this.txtQuery.Text))
             {
-                SearchSong(this.txtQuery.Text,false);
+                SearchSong(this.txtQuery.Text,false,false);
             }
             else
             {
@@ -36,11 +36,15 @@ namespace Mini_Spotify
             }
         }
 
-        private void SearchSong(string text,bool IsNextPage)
+        private void SearchSong(string text,bool IsNextPage,bool IsPrevious)
         {
             if (IsNextPage)
             {
                 Offset += 1;
+            }
+            if (IsPrevious)
+            {
+                Offset -= 1;
             }
             string url = "https://api.spotify.com/v1/search?query=" + text + "&type=track&&limit=20&offset="+Offset;
 
@@ -74,6 +78,7 @@ namespace Mini_Spotify
                     this.btnStop.Text = "Next";
                     this.btnStop.Visible = true;
                     ImageList images = new ImageList();
+                    images.ImageSize = new Size(80, 80);
                     if (images.Images.Count > 0)
                     {
                         images.Images.Clear();
@@ -81,8 +86,9 @@ namespace Mini_Spotify
                     int i = 0;
                     foreach (var item in Songs.tracks.items)
                     {
-                        images.Images.Add(LoadImage(item.album.images[2].url.ToString()));
+                        images.Images.Add(LoadImage(item.album.images[0].url.ToString()));
                         this.lvPlayList.Items.Add(item.name,i);
+                        i++;
                     }
                     this.lvPlayList.LargeImageList = images;
                 }
@@ -146,11 +152,36 @@ namespace Mini_Spotify
         {
             if (!IsPlaying)  //Next Page requested
             {
-                SearchSong(this.txtQuery.Text, true);
+                SearchSong(this.txtQuery.Text, true,false);
+                btnPrev.Visible = true;
             }
             else
             {
                 this.btnPlay.Text = "Play";
+            }
+        }
+
+        private void btnPrev_Click(object sender, EventArgs e)
+        {
+            if (!IsPlaying)  //Next Page requested
+            {
+                SearchSong(this.txtQuery.Text, false, true);
+                if (Offset == 0)
+                {
+                    btnPrev.Visible = false;
+                }
+            }
+            else
+            {
+                this.btnPlay.Text = "Play";
+            }
+        }
+
+        private void txtQuery_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                BtnSearch_Click(this, new EventArgs());
             }
         }
     }
